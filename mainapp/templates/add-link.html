@@ -1,0 +1,51 @@
+{% extends 'dashbase.html' %}
+
+{% block content %}
+{% load static %}
+
+<div class="container py-5 my-5">
+
+    <div class="text-center my-4">
+        <h2>Add a new link to your page</h2>
+    </div>
+
+    <div class="row mt-5 my-4">
+        <div class="col-md-6 ps-md-5 justify-content-center d-flex">
+            <div class=" mb-2">
+                <img src="{% static 'linkimg.png' %}" height="220" width="280">
+            </div>
+        </div>
+
+        <div class="col-md-6 px-5">
+
+
+                <form method="post" action="{% url 'add-link' %}">
+                    <div class="form-floating mt-5 mb-3">
+                        <input name="title" type="text" class="form-control" id="floatingInput" placeholder="Link Label">
+                        <label for="floatingInput">Link Label</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input name="url" type="url" class="form-control" id="floatingInput1" placeholder="https://....">
+                        <label for="floatingInput1">Link URL(https://....)</label>
+                    </div>
+                    {% csrf_token %}
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Add Link</button>
+                    </div>
+
+                </form>
+            
+            
+            
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+{% endblock %}

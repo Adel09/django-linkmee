@@ -1,0 +1,91 @@
+{% extends 'dashbase.html' %}
+
+{% block content %}
+
+
+<div class="container px-md-5">
+
+    <div class="text-center mt-4 mb-5">
+        <h3 class="mb-2">Hello, {{ page.name }}</h3>
+        <div class="row px-5 mt-3">
+            <div class="col-6">
+                <form method="get" action="{% url 'add-link' %}">
+                    <button type="submit" class="btn btn-primary">+ Add Link</button>
+                </form>
+            </div>
+            
+            <div class="col-6">
+            <form method="POST" action="{% url 'logoutuser' %}">
+            {% csrf_token %}
+                <button type="submit" class="btn btn-outline-primary"><i class="fa fa-sign-out"></i> Logout</button>
+            
+
+        </form>
+            </div>
+        </div>
+        
+        
+
+        
+    </div>
+
+    <div class="row px-md-5 mx-2 mb-3">
+
+        <div class="col-md-6 mb-3">
+
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                  <p><i class="fa fa-file-text" aria-hidden="true"></i> Page Views</p>
+                    <h1>{{ page.views }}</h1>
+                </div>
+              </div>
+
+        </div>
+
+        <div class="col-md-6 mb-3">
+
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                  <p><i class="fa fa-link" aria-hidden="true"></i> Number of Links </p>
+                    <h1>{{ links.count }}</h1>
+                </div>
+              </div>
+
+        </div>
+
+    </div>
+
+    <div class="container">
+        <div class="text-center mb-3">
+            <h2 class="text-decoration-underline">My Links</h2>
+        </div>
+
+        {% for link in links %}
+        <div class="card mx-3 py-1 mb-1">
+            <div class="card-body">
+              <div class="row px-2">
+                  
+                      <h3 class="mb-2"> {{link.title}} </h3>
+                  <p> <a class="" href="{{link.url}}" target="_blank"> {{link.url}} </a> </p>
+                  
+
+                  <form method="post" action="{% url 'delete' link.id %}">
+                      {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                  </form>
+                  
+              
+                  
+              </div>
+            </div>
+          </div>
+        {% empty %}
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+{% endblock %}
