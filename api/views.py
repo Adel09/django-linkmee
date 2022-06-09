@@ -21,9 +21,11 @@ def registeruser(request):
             page = Page.objects.create(name=request.data['pagename'], bio=request.data['about'], owner=user)
             page.save()
             token = Token.objects.create(user=user)
+            login(request, user)
             responsee = {
                 "token" : token.key,
             }
+            
             return JsonResponse(responsee, safe=False, status=200)
         except IntegrityError:
             res = {"message" : "User already exists"}
@@ -45,6 +47,7 @@ def loginuser(request):
                 token = Token.objects.create(user=user)
                 print(token.key)
                 res = {"token" : f"{token.key}"}
+                login(request, user)
                 return JsonResponse(res, status=200)
             except IntegrityError:
                 token = Token.objects.get(user=user)
@@ -88,5 +91,42 @@ def getUser(request):
     else:
         res = {"message" : "You're not authenticated"}
         return JsonResponse(res, status=401)
+
+@api_view(['POST'])
+def addLink(request):
+    if request.user.is_authenticated:
+        title = request.data['title']
+        url = request.data['url']
+        page = Page.objects.get(owner=request.user)
+        link = Link.objects.create(title=title, url=url, page=page)
+        link.save()
+        res = {
+            'status' : 'success',
+            'message' : 'Link added successfully'
+        }
+        return JsonResponse(res, status=201)
+    else:
+        res = {"message" : "You're not authenticated"}
+        return JsonResponse(res, status=401)
+
+@api_view(['POST'])
+def updatebio(request):
+    if request.user.is_authenticated:
+        bio = request.data['bio']
+        page = Page.objects.get(owner=request.user)
+        page.bio = bio
+        page.save(update_fields=['bio'])
+        # link = Link.objects.create(title=title, url=url, page=page)
+        # link.save()
+
+        res = {
+            'status' : 'success',
+            'message' : 'Bio updated successfully'
+        }
+        return JsonResponse(res, status=201)
+    else:
+        res = {"message" : "You're not authenticated"}
+        return JsonResponse(res, status=401)
+
 
 
