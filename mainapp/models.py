@@ -14,6 +14,7 @@ class Page(models.Model):
 class Link(models.Model):
     title = models.CharField(max_length=45)
     url = models.CharField(max_length=75)
+    count = models.IntegerField(default=0)
     page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='links')
     def __str__(self):
         return self.title

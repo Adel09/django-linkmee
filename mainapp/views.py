@@ -1,10 +1,12 @@
-from http.client import HTTPResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .models import Link, Page
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from .serializers import LinkSerializer, PageSerializer
 
 # Create your views here.
 def home(request):
@@ -99,6 +101,7 @@ def delete(request, id):
         link.delete()
         return redirect(dashboard)
     
-    
-        
-
+# def allLinks(request):
+#     links = Link.objects.all()
+#     serializer = LinkSerializer(links, many=True)
+#     return JsonResponse(serializer.data, safe=False)

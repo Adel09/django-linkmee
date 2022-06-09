@@ -1,4 +1,3 @@
-from unicodedata import name
 from django.urls import path, include
 from . import views
 
@@ -10,7 +9,9 @@ urlpatterns = [
     path('account/dashboard', views.dashboard, name='dashboard'),
     path('account/dashboard/add-link', views.addlink, name='add-link'),
     path('test', views.testpage, name='test'),
+    #path('app/api', views.allLinks, name='alllinks'),
     path('<str:username>', views.viewpage, name='viewpage'),
     path('delete/<str:id>', views.delete, name='delete'),
+    
     
 ]
